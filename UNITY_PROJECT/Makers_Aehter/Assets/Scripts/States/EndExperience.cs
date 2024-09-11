@@ -16,7 +16,8 @@ public class EndExperience : StateBase
         base.OnEnterState();
 
         //Play base sound
-        SoundsManager.Instance.PlayEndExperienceSound();
+        AudioClip clipEnd = SoundsManager.Instance.endExperience;
+        StartCoroutine(SoundsManager.Instance.PlayBaseSoundForPhase(clipEnd));
 
         //TODO :: Turn leds all white!
     }
@@ -26,6 +27,8 @@ public class EndExperience : StateBase
     public override void UpdateState()
     {
         base.UpdateState();
+
+        //TODO :: Detectar que las pulseras estan en la caja de nuevo
         if (timeInState > 5)
             Next();
 

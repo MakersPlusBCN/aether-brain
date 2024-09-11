@@ -126,7 +126,7 @@ public class GameManager : Singleton<GameManager>
             ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.gestures.Count.ToString());//Segments feedback leds
 
             //Play base sound
-            SoundsManager.Instance.PlayBaseSoundForPhase(currentPhaseElement.baseSound);
+            StartCoroutine( SoundsManager.Instance.PlayBaseSoundForPhase(currentPhaseElement.baseSound));
             phaseAvailable = true;
         }
         else
@@ -181,10 +181,10 @@ public class GameManager : Singleton<GameManager>
         currentGestureToSync = currentPhaseElement.gestures[currentGestureIndex];
 
         //Turn on symbol
-        ArduinoManager.Instance.SendMessageToArduino("0");//Reset LEDs
+        //ArduinoManager.Instance.SendMessageToArduino("0");//Reset LEDs
 
-        ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.messageArduino);//Leds simbolo caja
-        ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.gestures.Count.ToString());//Segments feedback leds
+        //ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.messageArduino);//Leds simbolo caja
+        //ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.gestures.Count.ToString());//Segments feedback leds
 
     }
 

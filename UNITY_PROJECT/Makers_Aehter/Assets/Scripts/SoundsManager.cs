@@ -17,25 +17,33 @@ public class SoundsManager : Singleton<SoundsManager>
 
 
 
-    public void PlayBaseWelcome()
+    public IEnumerator PlayBaseWelcome()
     {
-        audioSourceBase.Stop();
+        //audioSourceBase.Stop();
+        Debug.Log("PLAYING welcome sound!!! ");
+        float fadeTime = 0.4f;
+        StartCoroutine(FadeOut(audioSourceBase, fadeTime));
+
+
+        //audioSourceBase.Play();
+
+        yield return new WaitForSeconds(1f);
 
         audioSourceBase.clip = baseWelcome;
         audioSourceBase.loop = true;
 
-        audioSourceBase.Play();
+        StartCoroutine(FadeIn(audioSourceBase, 0.4f));
 
-        audioSourceBase.volume = 1f;
+        //audioSourceBase.volume = 1f;
 
     }
 
     public void FeedbackPulseraActiva()
     {
-        audioSourceBase.volume = 0.3f;
+        //audioSourceBase.volume = 0.3f;
 
         audioSourceFeedback.loop = false;
-        audioSourceFeedback.volume = 1f;
+        //audioSourceFeedback.volume = 1f;
         audioSourceFeedback.clip = feedbackPositivo;
         audioSourceFeedback.Play();
     }
@@ -46,12 +54,12 @@ public class SoundsManager : Singleton<SoundsManager>
         //audioSourceFeedback.Stop();
 
         audioSourceBase.Stop();
-        audioSourceBase.volume = 1f;
+        //audioSourceBase.volume = 1f;
     }
 
     public void FeedbackCompleteGesture()
     {
-        audioSourceFeedback.volume = 1f;
+        //saudioSourceFeedback.volume = 1f;
         audioSourceFeedback.Stop();
         audioSourceFeedback.loop = false;
 
@@ -71,26 +79,70 @@ public class SoundsManager : Singleton<SoundsManager>
         audioSourceFeedback.Play();
     }
 
-    public void PlayBaseSoundForPhase(AudioClip _aC)
+    public IEnumerator PlayBaseSoundForPhase(AudioClip _aC)
     {
-        audioSourceFeedback.Stop();
+        if(_aC != audioSourceBase.clip)
+        {
+            Debug.Log("PLAYING SOUND FOR CURRENT PHASE!!! ");
+            float fadeTime = 0.4f;
+            StartCoroutine(FadeOut(audioSourceBase, fadeTime));
+            //audioSourceFeedback.Stop();
 
-        audioSourceBase.volume = 1f;
-        audioSourceBase.loop = true;
+            //audioSourceBase.volume = 1f;
+           
 
-        audioSourceBase.clip = _aC;
-        audioSourceBase.Play();
+            yield return new WaitForSeconds(1f);
+            audioSourceBase.loop = true;
+            audioSourceBase.clip = _aC;
 
+            StartCoroutine(FadeIn(audioSourceBase, 0.4f));
+            //audioSourceBase.Play();
+        }
     }
 
-    public void PlayEndExperienceSound()
+    /*public void PlayEndExperienceSound()
     {
-        audioSourceFeedback.Stop();
-        audioSourceFeedback.loop = false;
+        audioSourceBase.Stop();
+        audioSourceBase.loop = false;
 
-        audioSourceFeedback.clip = endExperience;
+        audioSourceBase.clip = endExperience;
 
-        audioSourceFeedback.Play();
+        StartCoroutine(FadeIn(audioSourceFeedback, 0.5f));
+        //audioSourceFeedback.Play();
+    }*/
+
+    private IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+    {
+        Debug.Log("---->> start fade out");
+        float startVolume = 1f;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.Stop();
+        //audioSource.volume = startVolume;
+        Debug.Log("---->> end fade out");
+    }
+
+    private IEnumerator FadeIn(AudioSource audioSource, float FadeTime)
+    {
+        Debug.Log("---->> start fade in");
+        float startVolume = 0.1f;
+        audioSource.volume = startVolume;
+        audioSource.Play();
+
+        while (audioSource.volume < 1f)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+        Debug.Log("---->> end fade in");
+        //audioSource.volume = 1f;
     }
 
 }

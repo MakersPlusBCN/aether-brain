@@ -15,6 +15,8 @@ public class CallToAction : StateBase
         Debug.Log("ENTER STATE: CallToAction");
         base.OnEnterState();
 
+        GameManager.Instance.ResetGame();
+
         //Active Receive info Arduino - sensor pulseras -
         if (ArduinoManager.Instance.gameObject.activeSelf)
         {
@@ -36,7 +38,7 @@ public class CallToAction : StateBase
         //}
 
         //Play sound for state
-        SoundsManager.Instance.PlayBaseWelcome();
+        StartCoroutine(SoundsManager.Instance.PlayBaseWelcome());
     }
 
  
