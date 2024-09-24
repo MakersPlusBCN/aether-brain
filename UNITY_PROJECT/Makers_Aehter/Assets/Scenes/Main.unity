@@ -498,7 +498,7 @@ MonoBehaviour:
   mqttPassword: 
   topicSubscribe:
   - imu0/event
-  - imu0/event
+  - imu1/event
 --- !u!1 &226784225
 GameObject:
   m_ObjectHideFlags: 0

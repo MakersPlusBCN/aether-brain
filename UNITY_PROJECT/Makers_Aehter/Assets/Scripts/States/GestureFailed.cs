@@ -22,7 +22,12 @@ public class GestureFailed : StateBase
         SoundsManager.Instance.FeedbackFailGesture();
 
         ArduinoManager.Instance.TurnOffSymbols();
-        ArduinoManager.Instance.SendMessageToArduino("-");
+
+        if(GameManager.Instance.currentGestureIndex > 1)
+        {
+            ArduinoManager.Instance.SendMessageToArduino("-");
+        }
+        
 
         //Send arduino messages to complete effects
         if (GameManager.Instance.isMQTTActive)

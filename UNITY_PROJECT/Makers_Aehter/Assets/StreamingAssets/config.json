@@ -1,5 +1,5 @@
 {
-  "arduinoPort":"/dev/tty.usbserial-1420",
+  "arduinoPort":"/dev/tty.usbserial-1410",
   "mqtt_topic_0": "imu0/event", 
   "mqtt_topic_1": "imu1/event", 
   "mqtt_username":"control",

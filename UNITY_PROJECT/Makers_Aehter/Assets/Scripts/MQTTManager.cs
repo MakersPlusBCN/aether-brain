@@ -44,8 +44,11 @@ public class MQTTManager : M2MqttUnityClient
     protected override void SubscribeTopics()
     {
         //client.Subscribe( topicSubscribe, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-        client.Subscribe(new string[] { "imu0/event" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-        client.Subscribe(new string[] { "imu1/event" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+        //client.Subscribe(new string[] { "imu0/event" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+        //client.Subscribe(new string[] { "imu1/event" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+
+        client.Subscribe(new string[] { topicSubscribe[0] }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+        client.Subscribe(new string[] { topicSubscribe[1] }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
     }
 
     protected override void UnsubscribeTopics()
