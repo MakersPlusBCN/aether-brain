@@ -56,7 +56,7 @@ public class SerialController : MonoBehaviour
     protected SerialThreadLines serialThread;
 
 
-    private bool isInitialize = false;
+    public bool isInitialize = false;
 
 
     // ------------------------------------------------------------------------
@@ -72,22 +72,23 @@ public class SerialController : MonoBehaviour
     public void ConnectToArduino()
     {
 
-        string[] ports =  System.IO.Ports.SerialPort.GetPortNames();
-        for(int i = 0; i < ports.Length; i++)
+        if (!isInitialize)
         {
-            Debug.Log("Port --> " + ports[i]);
+            string[] ports = System.IO.Ports.SerialPort.GetPortNames();
+            /*for (int i = 0; i < ports.Length; i++)
+            {
+                Debug.Log("Port --> " + ports[i]);
+            }*/
+
+            serialThread = new SerialThreadLines(portName,
+                                                 baudRate,
+                                                 reconnectionDelay,
+                                                 maxUnreadMessages);
+            thread = new Thread(new ThreadStart(serialThread.RunForever));
+            thread.Start();
+
+            isInitialize = true;
         }
-
-        serialThread = new SerialThreadLines(portName,
-                                             baudRate,
-                                             reconnectionDelay,
-                                             maxUnreadMessages);
-        thread = new Thread(new ThreadStart(serialThread.RunForever));
-        thread.Start();
-
-        isInitialize = true;
-
-
     }
 
     // ------------------------------------------------------------------------

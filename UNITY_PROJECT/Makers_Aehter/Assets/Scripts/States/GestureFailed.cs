@@ -21,12 +21,11 @@ public class GestureFailed : StateBase
         //sound feedback
         SoundsManager.Instance.FeedbackFailGesture();
 
-        ArduinoManager.Instance.TurnOffSymbols();
+        //ArduinoManager.Instance.TurnOffSymbols();
 
-        if(GameManager.Instance.currentGestureIndex > 1)
-        {
-            ArduinoManager.Instance.SendMessageToArduino("-");
-        }
+        
+        ArduinoManager.Instance.SendMessageToArduino("-");
+        
         
 
         //Send arduino messages to complete effects

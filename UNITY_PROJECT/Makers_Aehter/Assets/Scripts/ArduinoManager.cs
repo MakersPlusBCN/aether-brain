@@ -16,9 +16,10 @@ public class ArduinoManager : Singleton<ArduinoManager>
 
     public void SetupArduinoManager()
     {
+        
         Debug.Log("Serial Arduino --> " + serialController.portName);
         serialController.ConnectToArduino();
-
+        
         receiveDataEnabled = false;
 
         sensorAOn = false;
@@ -79,11 +80,9 @@ public class ArduinoManager : Singleton<ArduinoManager>
 
     public void TurnOffSymbols()
     {
-       
-        if (serialController != null)
-        {
-            serialController.SendSerialMessage("0");
-        }
+        Debug.Log("TurnOffSymbols" );
+        SendMessageToArduino("O");
+        SendMessageToArduino("0");
     }
 
 

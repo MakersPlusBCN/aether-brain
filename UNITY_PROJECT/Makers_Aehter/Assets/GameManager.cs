@@ -49,11 +49,10 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetGame()
     {
-        
-            currentPhaseIndex = -1;
-            currentGestureIndex = -1;
-
-        
+        currentPhaseIndex = -1;
+        currentGestureIndex = -1;
+        pulseraAPlaying = false;
+        pulseraBPlaying = false;
     }
 
 
@@ -120,6 +119,7 @@ public class GameManager : Singleton<GameManager>
 
 
             //Turn on symbol
+            Debug.Log("SET LEDS --- RESET --> 0/"+ currentPhaseElement.messageArduino+"/"+ currentPhaseElement.gestures.Count.ToString());
             ArduinoManager.Instance.SendMessageToArduino("0");//Reset LEDs
 
             ArduinoManager.Instance.SendMessageToArduino(currentPhaseElement.messageArduino);//Leds simbolo caja

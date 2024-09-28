@@ -16,7 +16,7 @@ public class OneUserReady : StateBase
     {
         Debug.Log("ENTER STATE: OneUserReady");
         base.OnEnterState();
-
+        feedback.text = "";
 
         if (GameManager.Instance.IsPulseraBPlaying())
         {
