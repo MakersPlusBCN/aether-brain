@@ -1258,7 +1258,7 @@ MonoBehaviour:
   currentGestureIndex: 0
   gesturesPlayerA: 
   gesturesPlayerB: 
-  isMQTTActive: 0
+  isMQTTActive: 1
 --- !u!4 &399067098
 Transform:
   m_ObjectHideFlags: 0

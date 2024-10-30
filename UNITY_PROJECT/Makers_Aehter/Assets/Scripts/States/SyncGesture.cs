@@ -57,6 +57,7 @@ public class SyncGesture : StateBase
         textFeedbackElement.text = "Current phase = " + GameManager.Instance.currentPhaseElement.elementName;
 
         UIElements[0].GetComponent<Image>().color = GameManager.Instance.currentPhaseElement.color;
+
     }
 
  

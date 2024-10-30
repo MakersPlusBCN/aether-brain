@@ -29,8 +29,8 @@ public class GestureFailed : StateBase
         
 
         //Send arduino messages to complete effects
-        if (GameManager.Instance.isMQTTActive)
-            GameManager.Instance.mqttManager.ResetPublicMessage();
+       // if (GameManager.Instance.isMQTTActive)
+         //   GameManager.Instance.mqttManager.ResetPublicMessage();
 
     }
 

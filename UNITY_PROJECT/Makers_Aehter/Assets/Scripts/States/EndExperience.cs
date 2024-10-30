@@ -19,17 +19,25 @@ public class EndExperience : StateBase
         AudioClip clipEnd = SoundsManager.Instance.endExperience;
         StartCoroutine(SoundsManager.Instance.PlayBaseSoundForPhase(clipEnd));
 
-        //TODO :: Turn leds all white!
+        StartCoroutine(AllWhite());
     }
 
+    private IEnumerator AllWhite()
+    {
+        yield return new WaitForSeconds(1f);
+        //Turn leds all white!
+        ArduinoManager.Instance.TurnOffSymbols();
+        yield return new WaitForSeconds(5f);
+       ArduinoManager.Instance.SendMessageToArduino("X");
+    }
 
 
     public override void UpdateState()
     {
         base.UpdateState();
 
-        //TODO :: Detectar que las pulseras estan en la caja de nuevo
-        if (timeInState > 5)
+        //Detectar que las pulseras estan en la caja de nuevo
+        if (timeInState > 20)
             Next();
 
 

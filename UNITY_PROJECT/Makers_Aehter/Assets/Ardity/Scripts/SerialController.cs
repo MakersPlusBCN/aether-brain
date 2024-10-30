@@ -75,10 +75,10 @@ public class SerialController : MonoBehaviour
         if (!isInitialize)
         {
             string[] ports = System.IO.Ports.SerialPort.GetPortNames();
-            /*for (int i = 0; i < ports.Length; i++)
+            for (int i = 0; i < ports.Length; i++)
             {
                 Debug.Log("Port --> " + ports[i]);
-            }*/
+            }
 
             serialThread = new SerialThreadLines(portName,
                                                  baudRate,

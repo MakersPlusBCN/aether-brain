@@ -84,6 +84,13 @@ public class CallToAction : StateBase
            if (Input.GetKeyDown(KeyCode.O))
                ArduinoManager.Instance.TurnOffSymbols();
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            //ArduinoManager.Instance.TurnOffSymbols();
+            ArduinoManager.Instance.SendMessageToArduino("X");
+        }
+         
+
 
     }
 

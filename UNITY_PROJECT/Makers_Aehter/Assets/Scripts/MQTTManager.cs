@@ -36,7 +36,7 @@ public class MQTTManager : M2MqttUnityClient
 
     public void ResetPublicMessage()
     {
-        client.Publish("imu0/reset", System.Text.Encoding.UTF8.GetBytes("Test message"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+        client.Publish("imu0/cmd", System.Text.Encoding.UTF8.GetBytes("reset"), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
         Debug.Log("Reset message published");
         
     }

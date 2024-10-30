@@ -82,6 +82,14 @@ public class OneUserReady : StateBase
             }
         }
 
+        if (ArduinoManager.Instance.gameObject.activeSelf)
+        {
+            //Check that we have to reset to Call2Action
+            if (!ArduinoManager.Instance.IsSensorAOn() && !ArduinoManager.Instance.IsSensorBOn())
+                StateMachine.Instance.ChangeState(StatesEnum.CallToAction);
+        }
+
+
     }
 
     private void ActionsBeforeExit()
@@ -90,7 +98,6 @@ public class OneUserReady : StateBase
         if (ArduinoManager.Instance.gameObject.activeSelf)
         {
             ArduinoManager.Instance.StoptReceivingData();
-
 
             if (!GameManager.Instance.IsPulseraAPlaying() && ArduinoManager.Instance.IsSensorAOn())
                 GameManager.Instance.StartPlayingPulseraA();

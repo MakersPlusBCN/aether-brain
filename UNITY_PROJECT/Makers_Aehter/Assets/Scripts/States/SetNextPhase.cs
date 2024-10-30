@@ -22,6 +22,9 @@ public class SetNextPhase : StateBase
 
 
         phaseAvailable = GameManager.Instance.StartNextPhase();
+
+         
+
         goingToNext = false;
 
     }
