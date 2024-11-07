@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 
 public enum Element
@@ -47,6 +48,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        Debug.developerConsoleVisible = true;
 
         ResetGame();
 
@@ -60,6 +62,13 @@ public class GameManager : Singleton<GameManager>
         pulseraBPlaying = false;
     }
 
+
+    private void Update()
+    {
+        //Force open debug console
+        if(UnityEngine.Input.GetKeyDown(KeyCode.Z))
+            Debug.LogError("Force the build console open...");
+    }
 
     public void StartPlayingPulseraA()
     {

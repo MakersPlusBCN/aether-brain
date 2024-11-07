@@ -18,11 +18,11 @@ public class CallToAction : StateBase
         GameManager.Instance.ResetGame();
 
         //Active Receive info Arduino - sensor pulseras -
-        if (ArduinoManager.Instance.gameObject.activeSelf)
+        /*if (ArduinoManager.Instance.gameObject.activeSelf)
         {
             ArduinoManager.Instance.SetupArduinoManager();
             ArduinoManager.Instance.StartReceivingData();
-        }
+        }*/
       
 
 

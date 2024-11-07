@@ -124,7 +124,23 @@ public class StateMachine : Singleton<StateMachine>
             MQTTManagerRef.GetComponent<MQTTManager>().topicSubscribe[1] = config.getMqttTopic1(); 
         }
 
-        GameManager.Instance.appIsReady = true;
+        //Active Receive info Arduino - sensor pulseras -
+        if (ArduinoManager.Instance.gameObject.activeSelf)
+        {
+            ArduinoManager.Instance.SetupArduinoManager();
+            ArduinoManager.Instance.StartReceivingData();
+        }
+
+        if (ArduinoManager.Instance.connected)
+        {
+            GameManager.Instance.appIsReady = true;
+        }
+        else
+        {
+            Debug.LogError("Error setting up arduino board...");
+        }
+
+        
 
     }
 

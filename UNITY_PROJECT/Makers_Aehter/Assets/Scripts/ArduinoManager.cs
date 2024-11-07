@@ -12,7 +12,7 @@ public class ArduinoManager : Singleton<ArduinoManager>
     private bool sensorBOn;
 
     public SerialController serialController;
-
+    public bool connected = false;
 
     public void SetupArduinoManager()
     {
@@ -24,6 +24,7 @@ public class ArduinoManager : Singleton<ArduinoManager>
 
         sensorAOn = false;
         sensorBOn = false;
+        connected = false;
 
     }
 
@@ -124,9 +125,16 @@ public class ArduinoManager : Singleton<ArduinoManager>
     void OnConnectionEvent(bool success)
     {
         if (success)
+        {
             Debug.Log("Connection established");
+            connected = true;
+        }
         else
+        {
             Debug.Log("Connection attempt failed or disconnection detected");
+            connected = false;
+        }
+           
     }
     
 
