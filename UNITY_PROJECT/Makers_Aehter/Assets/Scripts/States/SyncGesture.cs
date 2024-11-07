@@ -20,12 +20,16 @@ public class SyncGesture : StateBase
     bool finishGesture;
     bool isSync;
 
+    bool goingToNext;
+    bool isCheckingPulserasActivas;
 
     public override void OnEnterState()
     {
         Debug.Log("ENTER STATE: SyncGesture");
         base.OnEnterState();
 
+        goingToNext = false;
+        isCheckingPulserasActivas = false;
 
         GameManager.Instance.ResetGesturesListPulseraA();
         GameManager.Instance.ResetGesturesListPulseraB();
@@ -97,8 +101,6 @@ public class SyncGesture : StateBase
         feedbackSynxGesture_A.text = "Player 0 - Frequent Gesture:\n" + GetMostFrequentGesture(GameManager.Instance.gesturesPlayerA);
         feedbackSynxGesture_B.text = "Player 1 - Frequent Gesture:\n" + GetMostFrequentGesture(GameManager.Instance.gesturesPlayerB);
 
-
-
         //If not sync happened during durationGesture --> Error -> tryagain! --> Jump to GestureFailed state!
         //If sync happened -> go to GestureCompleted state
 
@@ -107,9 +109,6 @@ public class SyncGesture : StateBase
             if (timeInState > durationGesture)
             {
                 finishGesture = true;
-                //GameManager.Instance.mqttManager.gameObject.SetActive(false);
-
-       
                 isSync = CheckSync();
  
 
@@ -122,6 +121,15 @@ public class SyncGesture : StateBase
                     StateMachine.Instance.ChangeState(StatesEnum.GestureFailed);
                 }
             }
+        }
+
+
+       
+        //Check that we have to reset to Call2Action
+        if (ArduinoManager.Instance.gameObject.activeSelf)
+        {
+            if (!isCheckingPulserasActivas && !ArduinoManager.Instance.IsSensorAOn() && !ArduinoManager.Instance.IsSensorBOn())
+                StartCoroutine(WaitBeforeResetExperience());
         }
 
     }
@@ -137,6 +145,7 @@ public class SyncGesture : StateBase
 
     private IEnumerator GoToNext()
     {
+        goingToNext = true;
         yield return new WaitForSeconds(2f);
         Next();
 
@@ -146,7 +155,6 @@ public class SyncGesture : StateBase
     {
         //Turn off gesture leds
         ArduinoManager.Instance.SendMessageToArduino("Q");
-
         StateMachine.Instance.ChangeState(nextState);
     }
 
@@ -223,6 +231,35 @@ public class SyncGesture : StateBase
 
         return _gesture;
      
+    }
+
+
+    private IEnumerator WaitBeforeResetExperience()
+    {
+        isCheckingPulserasActivas = true;
+        Debug.Log("[SyncGesture] Pulseras detectadas en caja, waiting " + GameManager.Instance.waitTimeResetSensors + "...");
+        yield return new WaitForSeconds(GameManager.Instance.waitTimeResetSensors);
+        if (GameManager.Instance.isMQTTActive)
+            GameManager.Instance.mqttManager.ResetPublicMessage();
+
+
+        //Check if we wait to go to screensaver -- si las pulseras continuan en la caja X segundos mas, volvemos a screensaver
+        Debug.Log("[SyncGesture] Pulseras detectadas en caja, waiting before going to screensaver...");
+        yield return new WaitForSeconds(GameManager.Instance.waitTimeResetExperience);
+
+        if(!ArduinoManager.Instance.IsSensorAOn() && !ArduinoManager.Instance.IsSensorBOn())
+        {
+            if (!goingToNext)
+            {
+                goingToNext = true;
+                Debug.Log("[SyncGesture] Back to screensaver...");
+                StateMachine.Instance.ChangeState(StatesEnum.CallToAction);
+            }
+        }
+        else
+        {
+            isCheckingPulserasActivas = false;
+        }
     }
 
 }

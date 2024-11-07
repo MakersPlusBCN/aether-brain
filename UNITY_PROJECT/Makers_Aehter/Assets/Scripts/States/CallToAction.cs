@@ -107,9 +107,6 @@ public class CallToAction : StateBase
         if (ArduinoManager.Instance.gameObject.activeSelf)
         {
 
-            //ArduinoManager.Instance.StoptReceivingData();
-
-
             if (ArduinoManager.Instance.IsSensorAOn())
                 GameManager.Instance.StartPlayingPulseraA();
 

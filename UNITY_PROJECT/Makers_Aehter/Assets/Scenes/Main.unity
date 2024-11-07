@@ -1259,6 +1259,8 @@ MonoBehaviour:
   gesturesPlayerA: 
   gesturesPlayerB: 
   isMQTTActive: 1
+  waitTimeResetExperience: 30
+  waitTimeResetSensors: 1
 --- !u!4 &399067098
 Transform:
   m_ObjectHideFlags: 0

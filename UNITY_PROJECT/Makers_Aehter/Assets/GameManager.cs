@@ -37,12 +37,17 @@ public class GameManager : Singleton<GameManager>
 
     public bool isMQTTActive;
 
+    public float waitTimeResetExperience;
+    public float waitTimeResetSensors; //mensaje reset pulseras, durante la experiencia
+        
+
     private bool pulseraAPlaying;
     private bool pulseraBPlaying;
 
 
     private void Start()
     {
+
         ResetGame();
 
     }

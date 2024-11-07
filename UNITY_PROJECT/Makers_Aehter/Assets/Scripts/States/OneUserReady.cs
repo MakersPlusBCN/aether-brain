@@ -7,16 +7,20 @@ using TMPro;
 
 public class OneUserReady : StateBase
 {
-    public StatesEnum nextState = StatesEnum.OneUserReady;
+    public StatesEnum nextState = StatesEnum.AllUsersReady;
 
     public TMP_Text feedback;
 
+
+    bool goingToNext;
 
     public override void OnEnterState()
     {
         Debug.Log("ENTER STATE: OneUserReady");
         base.OnEnterState();
         feedback.text = "";
+
+        goingToNext = false;
 
         if (GameManager.Instance.IsPulseraBPlaying())
         {
@@ -32,21 +36,7 @@ public class OneUserReady : StateBase
         }
 
 
-        //Active Receive info Arduino - sensor pulseras -
-        /*if (ArduinoManager.Instance.gameObject.activeSelf)
-        {
-            ArduinoManager.Instance.SetupArduinoManager();
-            ArduinoManager.Instance.StartReceivingData();
-        }*/
-
-
-        //Set light blinking (caja zona pulseras) para la pulsera que sigue en la caja
-        //turn off light (caja zona pulseras) zona de la pulsera que ya esta fuera de la caja (en uso)
-
-
-        //Keep off box ligths (symbol, instructions and gestures) para zona pulsera que sigue en la caja
-
-        //Turn on lights luces zona pulsera 
+  
 
         //Play sound for state
         SoundsManager.Instance.FeedbackPulseraActiva();
@@ -69,7 +59,8 @@ public class OneUserReady : StateBase
             {
                 if (ArduinoManager.Instance.IsSensorBOn())
                 {
-                    ActionsBeforeExit();
+                    Debug.Log("[OneUserReady] Start playing pulsera B!");
+                    GameManager.Instance.StartPlayingPulseraB();
                 }
             }
 
@@ -77,39 +68,29 @@ public class OneUserReady : StateBase
             {
                 if (ArduinoManager.Instance.IsSensorAOn())
                 {
-                    ActionsBeforeExit();
+                    Debug.Log("[OneUserReady] Start playing pulsera A!");
+                    GameManager.Instance.StartPlayingPulseraA();
                 }
             }
         }
+        else
+        {
+            Debug.Log("[OneUserReady] Arduino is not active! ");
+        }
 
+        //Check both players playing 
+        if(!goingToNext && ArduinoManager.Instance.gameObject.activeSelf && GameManager.Instance.IsPulseraBPlaying() && GameManager.Instance.IsPulseraAPlaying())
+        {
+            goingToNext = true;
+            Next();
+        }
+
+        //Check that we have to reset to Call2Action
         if (ArduinoManager.Instance.gameObject.activeSelf)
         {
-            //Check that we have to reset to Call2Action
             if (!ArduinoManager.Instance.IsSensorAOn() && !ArduinoManager.Instance.IsSensorBOn())
-                StateMachine.Instance.ChangeState(StatesEnum.CallToAction);
+                StartCoroutine(WaitBeforeResetExperience());
         }
-
-
-    }
-
-    private void ActionsBeforeExit()
-    {
-
-        if (ArduinoManager.Instance.gameObject.activeSelf)
-        {
-            ArduinoManager.Instance.StoptReceivingData();
-
-            if (!GameManager.Instance.IsPulseraAPlaying() && ArduinoManager.Instance.IsSensorAOn())
-                GameManager.Instance.StartPlayingPulseraA();
-
-
-            if (!GameManager.Instance.IsPulseraBPlaying() && ArduinoManager.Instance.IsSensorBOn())
-                GameManager.Instance.StartPlayingPulseraB();
-
-        }
-
-        Next();
-
     }
 
     public override void OnExitState()
@@ -121,7 +102,24 @@ public class OneUserReady : StateBase
 
     private void Next()
     {
+        //ArduinoManager.Instance.StoptReceivingData();
         StateMachine.Instance.ChangeState(nextState);
+    }
+
+    private IEnumerator WaitBeforeResetExperience()
+    {
+
+        Debug.Log("[OneUserReady] Pulseras detectadas en caja, waiting before going to screensaver...");
+        yield return new WaitForSeconds(GameManager.Instance.waitTimeResetExperience);
+
+        if (!goingToNext)
+        {
+            Debug.Log("[OneUserReady] Back to screensaver...");
+            goingToNext = true;
+            StateMachine.Instance.ChangeState(StatesEnum.CallToAction);
+
+        }
+           
     }
 
 }

@@ -31,11 +31,13 @@ public class ArduinoManager : Singleton<ArduinoManager>
 
     public void StartReceivingData()
     {
+        Debug.Log("Start receiving data from ARDUINO...");
         receiveDataEnabled = true;
     }
 
     public void StoptReceivingData()
     {
+        Debug.Log("Stop receiving data from ARDUINO...");
         receiveDataEnabled = false;
     }
 
