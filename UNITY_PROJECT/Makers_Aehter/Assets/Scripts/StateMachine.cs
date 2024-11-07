@@ -131,17 +131,14 @@ public class StateMachine : Singleton<StateMachine>
             ArduinoManager.Instance.StartReceivingData();
         }
 
-        if (ArduinoManager.Instance.connected)
-        {
-            GameManager.Instance.appIsReady = true;
-        }
-        else
-        {
-            Debug.LogError("Error setting up arduino board...");
-        }
 
+        Debug.LogError("Trying to connect to arduino board...");
+
+        yield return new WaitUntil(() => ArduinoManager.Instance.connected);
         
-
+        GameManager.Instance.appIsReady = true;
+       
+ 
     }
 
     public void Start()

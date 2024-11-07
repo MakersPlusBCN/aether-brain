@@ -2293,6 +2293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serialController: {fileID: 918415911}
+  connected: 0
 --- !u!4 &730350532
 Transform:
   m_ObjectHideFlags: 0
@@ -2656,6 +2657,10 @@ PrefabInstance:
       propertyPath: messageListener
       value: 
       objectReference: {fileID: 730350530}
+    - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
+      propertyPath: maxUnreadMessages
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

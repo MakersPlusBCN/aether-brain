@@ -15,6 +15,8 @@ public class CallToAction : StateBase
         Debug.Log("ENTER STATE: CallToAction");
         base.OnEnterState();
 
+        System.GC.Collect();
+
         GameManager.Instance.ResetGame();
 
         //Active Receive info Arduino - sensor pulseras -
