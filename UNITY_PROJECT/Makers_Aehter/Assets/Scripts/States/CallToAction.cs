@@ -33,11 +33,12 @@ public class CallToAction : StateBase
         //Set light blinking (caja zona pulseras)
 
         //Turn off box ligths (symbol, instructions and gestures)
-        //if (ArduinoManager.Instance.gameObject.activeSelf)
-        //{
+        if (ArduinoManager.Instance.gameObject.activeSelf)
+        {
             ArduinoManager.Instance.TurnOffSymbols();
+            ArduinoManager.Instance.SendMessageToArduino("Q");
 
-        //}
+        }
 
         //Play sound for state
         StartCoroutine(SoundsManager.Instance.PlayBaseWelcome());

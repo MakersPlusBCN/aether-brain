@@ -42,7 +42,7 @@ public class GestureFailed : StateBase
         if (Input.GetKeyDown(KeyCode.Space))
             Next();
 
-        if (timeInState > 1)
+        if (timeInState > 2)
             Next();
 
     }

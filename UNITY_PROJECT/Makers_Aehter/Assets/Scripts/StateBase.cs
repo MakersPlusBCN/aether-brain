@@ -36,7 +36,8 @@ public class StateBase : MonoBehaviour
 
     public virtual void OnEnterState()
     {
-        StartCoroutine(ShowElements()); 
+        StartCoroutine(ShowElements());
+        timeInState = 0;
     }
 
     public virtual void OnExitState()

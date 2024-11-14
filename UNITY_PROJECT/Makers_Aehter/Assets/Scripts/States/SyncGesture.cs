@@ -104,27 +104,28 @@ public class SyncGesture : StateBase
         //If not sync happened during durationGesture --> Error -> tryagain! --> Jump to GestureFailed state!
         //If sync happened -> go to GestureCompleted state
 
-        if (!finishGesture)
+        if (!isCheckingPulserasActivas)
         {
-            if (timeInState > durationGesture)
+            if (!finishGesture)
             {
-                finishGesture = true;
-                isSync = CheckSync();
- 
+                if (timeInState > durationGesture)
+                {
+                    finishGesture = true;
+                    isSync = CheckSync();
 
-                if (isSync)
-                {
-                    StartCoroutine(GoToNext());
-                }
-                else
-                {
-                    StateMachine.Instance.ChangeState(StatesEnum.GestureFailed);
+
+                    if (isSync)
+                    {
+                        StartCoroutine(GoToNext());
+                    }
+                    else
+                    {
+                        StateMachine.Instance.ChangeState(StatesEnum.GestureFailed);
+                    }
                 }
             }
         }
-
-
-       
+     
         //Check that we have to reset to Call2Action
         if (ArduinoManager.Instance.gameObject.activeSelf)
         {

@@ -1,10 +1,10 @@
 {
-  "arduinoPort":"/dev/tty.usbmodem-14101",
+  "arduinoPort":"/dev/tty.usbserial-1410",
   "mqtt_topic_0": "imu0/event", 
   "mqtt_topic_1": "imu1/event", 
   "mqtt_username":"control",
   "mqtt_password":"masterFlor",
-  "mqtt_broker_address":"192.168.1.30",
+  "mqtt_broker_address":"localhost",
   "mqtt_broker_port": 1883, 
-  "mqtt_active":true
+  "mqtt_active":false
 }
