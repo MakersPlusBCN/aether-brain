@@ -6,5 +6,5 @@
   "mqtt_password":"masterFlor",
   "mqtt_broker_address":"localhost",
   "mqtt_broker_port": 1883, 
-  "mqtt_active":false
+  "mqtt_active":true
 }
