@@ -1,6 +1,7 @@
 
 #include <Adafruit_NeoPixel.h>
-
+#define LED_PIN_PLA_A    2
+#define LED_PIN_PLA_B    3
 #define LED_PIN_I    4
 #define LED_PIN_C    5
 #define LED_PIN_S    6
@@ -11,7 +12,10 @@
 #define LED_COUNT_SIMBOLS 102
 #define LED_COUNT_GESTO 40
 #define LED_STATE_GESTO 304
-#define LED_INTERIOR 30
+#define LED_INTERIOR 39
+#define LED_PULSERA_A 10
+#define LED_PULSERA_B 10
+
 boolean estado_on = true;
 int period = 1000;
 unsigned long time_now = 0;
@@ -30,9 +34,9 @@ int r = 0;
 int g = 0;
 int b = 0;
 int s = 0;
-int i_b = 200;
+int i_b = 240;
 int state = 0;
-int valor = -1;
+int valor = -4;
 int cuenta = 0;
 boolean int_state = true;
 
@@ -46,10 +50,17 @@ unsigned long debounceDelayA = 20;    // the debounce time; increase if the outp
 unsigned long lastDebounceTimeB = 0;  // the last time the output pin was toggled
 unsigned long debounceDelayB = 20;    // the debounce time; increase if the output flickers
 
+bool leds_pulsera_a_on = true;
+bool leds_pulsera_b_on = true;
+
+
 Adafruit_NeoPixel strip_s(LED_COUNT_SIMBOLS, LED_PIN_S, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_g(LED_COUNT_GESTO, LED_PIN_G, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strip_c(LED_STATE_GESTO, LED_PIN_C, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel strip_i(LED_INTERIOR, LED_PIN_I, NEO_GRB + NEO_KHZ800);
+//Adafruit_NeoPixel strip_i(LED_INTERIOR, LED_PIN_I, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_a(LED_PULSERA_A, LED_PIN_PLA_A, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_b(LED_PULSERA_B, LED_PIN_PLA_B, NEO_GRB + NEO_KHZ800);
+
 int incomingByte;
 
 void setup() {
@@ -61,31 +72,41 @@ void setup() {
 
   //Inicializar leds
   strip_s.begin();
-  strip_s.show();
-  strip_s.setBrightness(100);
+  //strip_s.show();
+  //strip_s.setBrightness(100);
   strip_g.begin();
-  strip_g.show();
-  strip_g.setBrightness(100);
+  //strip_g.show();
+  //strip_g.setBrightness(100);
   strip_c.begin();
-  strip_c.show();
-  strip_c.setBrightness(100);
-  strip_i.begin();
-  strip_i.show();
-  strip_i.setBrightness(10);
+  //strip_c.show();
+  //strip_c.setBrightness(100);
+
+  //Reset strip_i
+  //strip_i.begin();
+  //strip_i.clear();
+  //strip_i.show();
+  //strip_i.setBrightness(100);
+ 
+
+  strip_a.begin();
+  //strip_b.show();
+  //strip_b.setBrightness(100);
+  strip_b.begin();
+  //strip_b.show();
+  //strip_b.setBrightness(100);
   strip_s.clear();
   strip_g.clear();
   strip_c.clear();
-  strip_i.clear();
-  segment_i(strip_i.Color(255, 255, 255), 0, 30, 0);
-  strip_i.show();
-
+  strip_a.clear();
+  strip_b.clear();
 }
 
 void loop() {
+
   cuenta++;
-  if (cuenta == 1000) {
+    if (cuenta == 5) {
     i_b -= valor;
-    if (i_b < 20 || i_b > 200) {
+    if (i_b < 20 || i_b > 240) {
       valor = valor * -1;
     }
     if (int_state == true) {
@@ -94,17 +115,14 @@ void loop() {
       state = 0;
     }
 
-    strip_i.setBrightness(state);
-
-
-    segment_i(strip_i.Color(255, 0, 0), 0, 30, 0);
-    strip_i.show();
+    
+   // Serial.println(state);
+   
     cuenta = 0;
-  }
+    }
 
-  //leer sensores pulseras
-  //P_A = digitalRead(PLAYER_A);
-  //P_B = digitalRead(PLAYER_B);
+
+  
 
   // read the state of the switch into a local variable:
   int readingA = digitalRead(PLAYER_A);
@@ -115,6 +133,14 @@ void loop() {
   // since the last press to ignore any noise:
 
   //---- PULSERA A ----
+  //LEDS Pulsera A
+  if (leds_pulsera_a_on) {
+    segment_a(strip_a.Color(state, state, state), 0, LED_PULSERA_A, 0);
+  } else {
+    strip_a.clear();
+    strip_a.show();
+  }
+
   // If the switch changed, due to noise or pressing:
   if (readingA != P_Aprev) {
     // reset the debouncing timer
@@ -131,8 +157,11 @@ void loop() {
 
       if (P_A == HIGH) {
         Serial.write("pulseraA/1\n");
+        //strip_a.clear();
+        leds_pulsera_a_on = false;
       } else {
         Serial.write("pulseraA/0\n");
+        leds_pulsera_a_on = true;
       }
     }
   }
@@ -141,9 +170,14 @@ void loop() {
   P_Aprev = readingA;
   //------------------
 
-
-
   //---- PULSERA B ----
+  if (leds_pulsera_b_on) {
+    segment_b(strip_b.Color(state, state, state), 0, LED_PULSERA_A, 0);
+  } else {
+    strip_b.clear();
+    strip_b.show();
+  }
+
   // If the switch changed, due to noise or pressing:
   if (readingB != P_Bprev) {
     // reset the debouncing timer
@@ -160,8 +194,11 @@ void loop() {
 
       if (P_B == HIGH) {
         Serial.write("pulseraB/1\n");
+        leds_pulsera_b_on = false;
+        //strip_b.clear();
       } else {
         Serial.write("pulseraB/0\n");
+        leds_pulsera_b_on = true;
       }
     }
   }
@@ -316,6 +353,14 @@ void loop() {
       cambia_sta_int();
     }
 
+if (incomingByte == 'X') {
+     
+     theaterChase_c(strip_c.Color(200, 200, 200), 80); 
+      
+    }
+
+
+
 
     if (segmentos == 2) {
       if (nivel == 0) {
@@ -426,16 +471,29 @@ void segment_g(uint32_t color, int from, int to, int wait) {
 void segment_c(uint32_t color, int from, int to, int wait) {
   for (int i = from; i < to; i++) { // For each pixel in strip_s...
     strip_c.setPixelColor(i, color);
-    //strip_c.show();
-    //delay(wait);
   }
 }
-
+/*
 void segment_i(uint32_t color, int from, int to, int wait) {
   for (int i = from; i < to; i++) { // For each pixel in strip_s...
     strip_i.setPixelColor(i, color);
-    //strip_c.show();
-    //delay(wait);
+    strip_i.show();
+    delay(wait);
+  }
+}
+*/
+
+void segment_a(uint32_t color, int from, int to, int wait) {
+  for (int i = from; i < to; i++) { // For each pixel in strip_s...
+    strip_a.setPixelColor(i, color);
+    strip_a.show();
+  }
+}
+
+void segment_b(uint32_t color, int from, int to, int wait) {
+  for (int i = from; i < to; i++) { // For each pixel in strip_s...
+    strip_b.setPixelColor(i, color);
+    strip_b.show();
   }
 }
 
@@ -505,4 +563,25 @@ void fijo() {
 
 void cambia_sta_int() {
   int_state = !int_state;
+}
+
+
+void theaterChase_c(uint32_t color, int wait) {
+  for(int a=0; a<10; a++) {  // Repeat 10 times...
+    for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
+      strip_c.clear();         //   Set all pixels in RAM to 0 (off)
+      strip_g.clear();
+      strip_s.clear();
+      // 'c' counts up from 'b' to end of strip in steps of 3...
+      for(int c=b; c<strip_c.numPixels(); c += 3) {
+        strip_c.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+        strip_g.setPixelColor(c, color);
+        strip_s.setPixelColor(c, color);
+      }
+      strip_c.show(); // Update strip with new contents
+      strip_g.show();
+      strip_s.show();
+      delay(wait);  // Pause for a moment
+    }
+  }
 }
