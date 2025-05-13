@@ -152,13 +152,15 @@ Mensajes control LEDs zona superior de la estructura:
 
 
 Otros mensajes: 
-- "+"
-- "-"
-- "0"
-- "O"
-- "Q"
-- "X"
-- Números del 1 al 8 (fragmentos de la barra de progeso) 
+- "+" -> Avanzar un nivel en la barra de progreso
+- "-" -> Disminuir un nivel en la barra de progreso
+- "0" -> Para la animación del gesto 
+- "O" -> Apaga las barras de progreso
+- "Q" -> Apaga indicador de gestos
+- "H", "V", "D" -> Encender LEDs gestos (Horizontal, Vertical, Diagonal) 
+- "X" -> Activa el efecto final 
+- "I" -> ??
+- Números del 1 al 8 (fragmentos de la barra de progeso). Enviar primero "O" (para apagar barras), y despues numéro de segmentos que se quiere en cada nivel 
 
 
 
